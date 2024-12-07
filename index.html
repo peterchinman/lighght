@@ -13,7 +13,7 @@
 
 <body>
 
-<h1 class="loud-voice">LI<span class='silent-letters'>GH</span><span class='silent-letters'>GH</span>T</h1>
+<h1 class="loud-voice">LI<span class='silent-letter-container'><span class='silent-letters'>GH</span><span class='silent-letters'>GH</span></span>T</h1>
 
 <textarea id="textfield" type="text">
 </textarea>
@@ -50,8 +50,8 @@
 					console.error(word + " not found in dictionary.");
 				}
 
-				const prefix = "<span class='silent-letters'>";
-				const suffix = "</span>";
+				const prefix = "<span class='silent-letter-container'><span class='silent-letters'>";
+				const suffix = "</span></span>";
 
 				let marked_word = word;
 				if (pronunciations) {
@@ -95,6 +95,19 @@
 				silentCancer();
 			}
 		}, 1000);
+
+		document.addEventListener('click', (event) => {
+			console.log("click");
+			if (event.target.closest('.silent-letter-container')) {
+				let $container = event.target.closest('.silent-letter-container');
+				const children = Array.from($container.children);
+				for (let i = 0; i < children.length; ++i) {
+					if (i > 0) {
+						$container.removeChild(children[i])
+					}
+				}
+			}
+		})
 		
 
 		
