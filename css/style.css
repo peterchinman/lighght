@@ -1,0 +1,49 @@
+@import 'reset.css';
+@import 'setup.css';
+
+:root {
+	--neutral-0: 		#FFFFFF;
+	--neutral-20:		#FAFAFA;
+	--neutral-30:		#F7F7F7;
+	--neutral-50:		#F2F2F2;
+	--neutral-100:		#E5E5E5;
+	--neutral-200: 	#CCCCCC;
+	--neutral-300: 	#B2B2B2;
+	--neutral-400: 	#999999;
+	--neutral-500:		#808080;
+	--neutral-600:		#666666;
+	--neutral-700:		#4D4D4D;
+	--neutral-800:		#333333;
+	--neutral-900:		#1A1A1A;
+	--neutral-1000:	#000000;
+
+	--bg-color: var(--neutral-0);
+}
+
+body {
+	background-color: var(--bg-color);
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	justify-content: center;
+	align-items: center;
+	font-family: monospace;
+}
+
+.silent-letters {
+	background-color: lightcoral;
+}
+
+textarea, #result {
+	width: max(50vw, 350px);
+	min-height: max(20vh, 200px);
+	font-family: monospace;
+	font-size: 1.3rem;
+	line-height: 1.5;
+
+}
+
+.loud-voice {
+	font-size: 2.5rem;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>[[Insert Title]]</title>
+
+	<meta name="description" content="[[Insert Description]]">
+	<meta property="og:image" content="[[Insert Absolute Path]]">
+
+	<link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<h1 class="loud-voice">LIGHGHT</h1>
+
+<textarea id="textfield" type="text">
+</textarea>
+
+<div id="result"></div>
+	
+
+<script src="static/silent-letters.js"></script>
+<script>
+	
+	
+
+	// Initialize the WebAssembly module
+	Module().then((Module) => {
+		console.log("We're inside.");
+
+		// Create an instance of CMU_Dict
+		const dict = new Module.CMU_Dict();
+
+		const $textfield = document.querySelector('#textfield');
+		$textfield.addEventListener('input', (event) => {
+			const text = $textfield.value;
+			const words = text.split(" ");
+			console.log(words);
+
+			let results = "";
+
+			words.forEach((word) => {
+				const pronunciations = dict.find_phones(word) || [""];
+				console.log(pronunciations);
+
+				const prefix = "<span class='silent-letters'>";
+				const suffix = "</span>";
+
+				const marked_word = Module.get_word_with_marked_silent_letters(word, pronunciations, prefix, suffix, false, "");
+
+				results += marked_word + " ";
+				console.log(marked_word);
+
+
+
+			})
+
+			
+			document.querySelector('#result').innerHTML = results;
+			$silentLetters = document.querySelectorAll('.silent-letters');
+			$silentLetters.forEach((span) => {
+				const clone = span.cloneNode(true);
+				span.parentNode.insertBefore(clone, span.nextSibling)
+			})
+		
+
+			
+		})
+		
+
+		
+  });
+</script>
+</body>
+
+</html>
