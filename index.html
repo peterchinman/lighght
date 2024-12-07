@@ -13,7 +13,7 @@
 
 <body>
 
-<h1 class="loud-voice">LIGHGHT</h1>
+<h1 class="loud-voice">LI<span class='silent-letters'>GH</span><span class='silent-letters'>GH</span>T</h1>
 
 <textarea id="textfield" type="text">
 </textarea>
@@ -28,38 +28,46 @@
 
 	// Initialize the WebAssembly module
 	Module().then((Module) => {
-		console.log("We're inside.");
+
 
 		// Create an instance of CMU_Dict
 		const dict = new Module.CMU_Dict();
 
+		// split up textfield into words
 		const $textfield = document.querySelector('#textfield');
 		$textfield.addEventListener('input', (event) => {
 			const text = $textfield.value;
 			const words = text.split(" ");
-			console.log(words);
 
 			let results = "";
 
 			words.forEach((word) => {
-				const pronunciations = dict.find_phones(word) || [""];
-				console.log(pronunciations);
+				let pronunciations = "";
+				try {
+					pronunciations = dict.find_phones(word);
+				}
+				catch(error) {
+					console.error(word + " not found in dictionary.");
+				}
 
 				const prefix = "<span class='silent-letters'>";
 				const suffix = "</span>";
 
-				const marked_word = Module.get_word_with_marked_silent_letters(word, pronunciations, prefix, suffix, false, "");
-
+				let marked_word = word;
+				if (pronunciations) {
+					try {
+						marked_word = Module.get_word_with_marked_silent_letters(word, pronunciations, prefix, suffix, false, "");
+					}
+					catch(error) {
+						console.error("Unable to find silent letters in: " + word);
+					}
+				}
 				results += marked_word + " ";
-				console.log(marked_word);
-
-
-
 			})
 
 			
-			document.querySelector('#result').innerHTML = results;
-			$silentLetters = document.querySelectorAll('.silent-letters');
+			result.innerHTML = results;
+			$silentLetters = result.querySelectorAll('.silent-letters');
 			$silentLetters.forEach((span) => {
 				const clone = span.cloneNode(true);
 				span.parentNode.insertBefore(clone, span.nextSibling)
@@ -68,6 +76,25 @@
 
 			
 		})
+
+		// Function to handle the event
+		function silentCancer() {
+			silentLetterSpans = document.querySelectorAll('.silent-letters');
+			randomIndex = Math.floor(Math.random() * silentLetterSpans.length)
+			cancer = silentLetterSpans[randomIndex];
+			const clone = cancer.cloneNode(true);
+			cancer.parentNode.insertBefore(clone, cancer.nextSibling)
+		}
+
+		// Check every second (1000 milliseconds)
+		setInterval(() => {
+			// Generate a random number between 0 and 99
+			const randomChance = Math.floor(Math.random() * 100);
+
+			if (randomChance < 20) {
+				silentCancer();
+			}
+		}, 1000);
 		
 
 		

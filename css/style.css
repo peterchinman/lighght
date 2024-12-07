@@ -17,7 +17,7 @@
 	--neutral-900:		#1A1A1A;
 	--neutral-1000:	#000000;
 
-	--bg-color: var(--neutral-0);
+	--bg-color: var(--neutral-50);
 }
 
 body {
@@ -32,7 +32,7 @@ body {
 }
 
 .silent-letters {
-	background-color: lightcoral;
+	background-color: white;
 }
 
 textarea, #result {
