@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>LIGHGHT</title>
+	<title>lighght</title>
 
 	<meta name="description" content="A Silent Letter Detector">
 	<meta property="og:image" content="[[Insert Absolute Path]]">
@@ -13,9 +13,11 @@
 
 <body>
 
-<h1 class="loud-voice">LI<span class='silent-letter-container'><span class='silent-letters'>GH</span><span class='silent-letters'>GH</span></span>T</h1>
+<h1 class="loud-voice">li<span class='silent-letter-container'><span class='silent-letters'>gh</span><span class='silent-letters'>gh</span></span>t</h1>
+<p>a silent letter detector</p>
 
-<textarea id="textfield" type="text">
+<textarea id="textfield" type="text" placeholder='type here, e.g. "thumb", "knuckle", "receipt"'
+>
 </textarea>
 
 <div id="result"></div>
@@ -77,37 +79,7 @@
 			
 		})
 
-		// Function to handle the event
-		function silentCancer() {
-			silentLetterSpans = document.querySelectorAll('.silent-letters');
-			randomIndex = Math.floor(Math.random() * silentLetterSpans.length)
-			cancer = silentLetterSpans[randomIndex];
-			const clone = cancer.cloneNode(true);
-			cancer.parentNode.insertBefore(clone, cancer.nextSibling)
-		}
-
-		// Check every second (1000 milliseconds)
-		setInterval(() => {
-			// Generate a random number between 0 and 99
-			const randomChance = Math.floor(Math.random() * 100);
-
-			if (randomChance < 20) {
-				silentCancer();
-			}
-		}, 1000);
-
-		document.addEventListener('click', (event) => {
-			console.log("click");
-			if (event.target.closest('.silent-letter-container')) {
-				let $container = event.target.closest('.silent-letter-container');
-				const children = Array.from($container.children);
-				for (let i = 0; i < children.length; ++i) {
-					if (i > 0) {
-						$container.removeChild(children[i])
-					}
-				}
-			}
-		})
+		
 		
 
 		

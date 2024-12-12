@@ -33,6 +33,7 @@ body {
 
 .silent-letters {
 	background-color: white;
+	cursor: pointer;
 }
 
 textarea, #result {
