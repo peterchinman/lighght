@@ -16,67 +16,105 @@
 <h1 class="loud-voice">li<span class='silent-letter-container'><span class='silent-letters'>gh</span><span class='silent-letters'>gh</span></span>t</h1>
 <p>a silent letter detector</p>
 
-<textarea id="textfield" type="text" placeholder='type here, e.g. "thumb", "knuckle", "receipt"'
->
-</textarea>
-
-<div id="result"></div>
+<div id="textfield" contenteditable="true"></div>
 	
 
 <script src="static/silent-letters.js"></script>
 <script>
 	
-	
+	const textfield = document.querySelector('#textfield')
+	let dict;
+
+	function markSilentLetters(text, Module) {
+		// get cursor position
+		const cursorPosition = getCursorPosition();
+
+		// Match words and whitespace/newline sequences separately
+    	const wordsAndSpaces = text.match(/(\S+|\s+)/g);
+		// Process only the words, leaving whitespace/newlines untouched
+		const processedTokens = wordsAndSpaces.map(token => {
+			if (/\S/.test(token)) {
+				// Token is a token (non-whitespace), process it
+				let marked_word = token;
+				try {
+					pronunciation = dict.find_phones(token);
+					const prefix = "<span class='silent-letter-container'><span class='silent-letters'>";
+					const suffix = "</span></span>";
+					marked_word = Module.get_word_with_marked_silent_letters(token, pronunciation, prefix, suffix, false, "");
+
+				}
+				catch(error) {
+					// console.error(token + " not found in dictionary.");
+				}
+
+				return marked_word; // Replace with your processing logic
+			}
+			// Token is whitespace/newline, leave it as is
+			return token;
+		});
+
+    	// Recombine tokens to form the original structure
+		textfield.innerHTML = processedTokens.join('');
+		setCursorPosition(cursorPosition);
+	}
+
+
+	function getCursorPosition() {
+		const selection = window.getSelection(); // wharever is selected...
+		if (!selection.rangeCount) return null; // exit if nothing selected
+
+		const range = selection.getRangeAt(0);
+		const preCaretRange = range.cloneRange();
+		preCaretRange.selectNodeContents(textfield);
+		preCaretRange.setEnd(range.endContainer, range.endOffset);
+
+		return preCaretRange.toString().length; // the cursor's character index
+	}
+
+	function setCursorPosition(position) {
+		const selection = window.getSelection();
+		const range = document.createRange();
+		let charCount = 0;
+
+		function traverseNodes(node) {
+			if (node.nodeType === Node.TEXT_NODE) {
+				const nextCharCount = charCount + node.textContent.length;
+				if (position <= nextCharCount) {
+				range.setStart(node, position - charCount);
+				range.collapse(true);
+				return true;
+				}
+				charCount = nextCharCount;
+			} else {
+				for (let i = 0; i < node.childNodes.length; i++) {
+				if (traverseNodes(node.childNodes[i])) return true;
+				}
+			}
+			return false;
+		}
+
+		traverseNodes(textfield);
+		selection.removeAllRanges();
+		selection.addRange(range);
+	}
 
 	// Initialize the WebAssembly module
 	Module().then((Module) => {
-
+		console.log("module initialized")
 
 		// Create an instance of CMU_Dict
-		const dict = new Module.CMU_Dict();
+		dict = new Module.CMU_Dict();
+		console.log("dictionary initialized")
 
-		// split up textfield into words
-		const $textfield = document.querySelector('#textfield');
-		$textfield.addEventListener('input', (event) => {
-			const text = $textfield.value;
-			const words = text.split(" ");
+		textfield.addEventListener('input', (event) => {
+			markSilentLetters(textfield.innerText, Module);
 
-			let results = "";
-
-			words.forEach((word) => {
-				let pronunciations = "";
-				try {
-					pronunciations = dict.find_phones(word);
-				}
-				catch(error) {
-					console.error(word + " not found in dictionary.");
-				}
-
-				const prefix = "<span class='silent-letter-container'><span class='silent-letters'>";
-				const suffix = "</span></span>";
-
-				let marked_word = word;
-				if (pronunciations) {
-					try {
-						marked_word = Module.get_word_with_marked_silent_letters(word, pronunciations, prefix, suffix, false, "");
-					}
-					catch(error) {
-						console.error("Unable to find silent letters in: " + word);
-					}
-				}
-				results += marked_word + " ";
-			})
-
-			
-			result.innerHTML = results;
-			$silentLetters = result.querySelectorAll('.silent-letters');
-			$silentLetters.forEach((span) => {
-				const clone = span.cloneNode(true);
-				span.parentNode.insertBefore(clone, span.nextSibling)
-			})
-		
-
-			
+			// now double them
+			//$silentLetters = result.querySelectorAll('.silent-letters');
+			//$silentLetters.forEach((span) => {
+				//const clone = span.cloneNode(true);
+				//span.parentNode.insertBefore(clone, span.nextSibling)
+			//})
 		})
 
 		

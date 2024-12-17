@@ -36,12 +36,24 @@ body {
 	cursor: pointer;
 }
 
-textarea, #result {
-	width: max(50vw, 350px);
-	min-height: max(20vh, 200px);
+#textfield {
+	display: inline-block;
 	font-family: monospace;
 	font-size: 1.3rem;
 	line-height: 1.5;
+
+	width: max(50vw, 350px);
+	min-height: max(20vh, 200px);
+
+	padding: 8px;
+	/* weirdly, this *needs* to be inline-block and not block for new-lines to work correctly   */
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-family: Arial, sans-serif;
+	white-space: pre-wrap; /* preserve spaces and newlines */
+	word-wrap: break-word; /* for long words */
+	overflow-y: auto;
+	resize: vertical; /* allow manual resizing */
 
 }
 
