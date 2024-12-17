@@ -18,9 +18,9 @@ a {
 }
 
 /* put the classic link styles back */
-p a {
+li a, p a {
 	display: inline;
-	color: blue;
+	/* color: blue; */
 	text-decoration: underline;
 }
 

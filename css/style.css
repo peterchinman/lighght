@@ -30,9 +30,20 @@ body {
 	flex-direction: column;
 }
 
+inner-column {
+	padding-inline: 1rem;
+	max-width: 1600px;
+	margin-inline: auto;
+}
+
 header {
+	background-color: var(--neutral-100);
+}
+.topbar {
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-between;
+	align-items: center;
+	
 }
 
 main {
