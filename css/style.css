@@ -18,17 +18,31 @@
 	--neutral-1000:	#000000;
 
 	--bg-color: var(--neutral-50);
+	--border: var(--neutral-700);
+	--green: #E0FFDD;
 }
 
 body {
 	background-color: var(--bg-color);
-	height: 100vh;
+	min-height: 100vh;
+	font-family: monospace;
+	display: flex;
+	flex-direction: column;
+}
+
+header {
+	display: flex;
+	justify-content: flex-end;
+}
+
+main {
+	min-height: 100%;
+	flex-grow: 2;
 	display: flex;
 	flex-direction: column;
 	gap: 2rem;
 	justify-content: center;
 	align-items: center;
-	font-family: monospace;
 }
 
 .silent-letters {
@@ -49,13 +63,59 @@ body {
 	/* weirdly, this *needs* to be inline-block and not block for new-lines to work correctly   */
 	border: 1px solid #ccc;
 	border-radius: 4px;
-	font-family: Arial, sans-serif;
 	white-space: pre-wrap; /* preserve spaces and newlines */
 	word-wrap: break-word; /* for long words */
 	overflow-y: auto;
-	resize: vertical; /* allow manual resizing */
+	/* resize: vertical; */
 
 }
+
+#textfield:focus {
+	/* border:  */
+}
+
+#textfield:empty::before {
+	content: attr(data-placeholder);
+	color: #00000066;
+}
+
+.slider-option{
+	display: flex;
+	align-items: center;
+}
+
+/* from https://codepen.io/t_afif/pen/rNpJaZY */
+input[type="checkbox"] {
+	--s: 20px; /* adjust this to control the size*/
+	
+	--_g: radial-gradient(calc(var(--s)/2),#15202a 96%,#0000); /* the color of the circle here */
+	height: var(--s);
+	aspect-ratio: 2.5;
+	width: auto; /* some browsers need this */
+	border-radius: var(--s);
+	padding: calc(var(--s)/10);
+	margin: calc(var(--s)/2);
+	display: grid;
+	cursor: pointer;
+	background: var(--neutral-100); /* the red color */
+	box-sizing: content-box;
+	overflow: hidden;
+	transition: .3s .1s;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+ }
+ input[type="checkbox"]:before,
+ input[type="checkbox"]:after{
+	content: "";
+	grid-area: 1/1;
+	transition: .3s;
+	background: var(--_g) var(--_p,0%)/var(--s) 100% no-repeat;
+ }
+ input[type="checkbox"]:checked {
+	/* background-color: var(--green); */
+	--_p: 100%;
+ }
 
 .loud-voice {
 	font-size: 2.5rem;

@@ -9,14 +9,29 @@
 	<meta property="og:image" content="[[Insert Absolute Path]]">
 
 	<link href="css/style.css" rel="stylesheet">
+	
+	<script src="static/cancer.js"></script>
 </head>
 
 <body>
 
-<h1 class="loud-voice">li<span class='silent-letter-container'><span class='silent-letters'>gh</span><span class='silent-letters'>gh</span></span>t</h1>
-<p>a silent letter detector</p>
+<header>
+	<!--
+	<label class="slider-option"><span>lighght mode?</span>
+		<input id="lighght-mode" type="checkbox">
+	</label>
+	-->
+	<label class="slider-option"><span>cancer mode?</span>
+		 <input id="cancer-mode" type="checkbox">
+	</label>
+</header>
 
-<div id="textfield" contenteditable="true"></div>
+<main>
+	<h1 class="loud-voice">li<span class='silent-letter-container'><span class='silent-letters'>gh</span><span class='silent-letters'>gh</span></span>t</h1>
+	<p>a silent letter detector</p>
+	
+	<span id="textfield" contenteditable="true" data-placeholder="type here" spellcheck="false"></span>
+</main>
 	
 
 <script src="static/silent-letters.js"></script>
@@ -26,6 +41,7 @@
 	let dict;
 
 	function markSilentLetters(text, Module) {
+
 		// get cursor position
 		const cursorPosition = getCursorPosition();
 
@@ -52,7 +68,6 @@
 			// Token is whitespace/newline, leave it as is
 			return token;
 		});
-
     	// Recombine tokens to form the original structure
 		textfield.innerHTML = processedTokens.join('');
 		setCursorPosition(cursorPosition);
@@ -98,6 +113,21 @@
 		selection.addRange(range);
 	}
 
+
+
+	const cancerMode = document.querySelector('#cancer-mode');
+	const lighghtMode = document.querySelector('#lighght-mode');
+
+	let intervalID;
+	cancerMode.addEventListener('change', (event) => {
+		if (cancerMode.checked) {
+			intervalID = cancerInterval(10, 300);
+		}
+		else{
+			clearInterval(intervalID);
+		}
+	})
+
 	// Initialize the WebAssembly module
 	Module().then((Module) => {
 		console.log("module initialized")
@@ -107,18 +137,29 @@
 		console.log("dictionary initialized")
 
 		textfield.addEventListener('input', (event) => {
-			markSilentLetters(textfield.innerText, Module);
+			if(textfield.innerText.trim().length > 0) {
+				markSilentLetters(textfield.innerText, Module);
+			}
+			else{
+				textfield.innerHTML = "";
+			}
 
-			// now double them
-			//$silentLetters = result.querySelectorAll('.silent-letters');
-			//$silentLetters.forEach((span) => {
-				//const clone = span.cloneNode(true);
-				//span.parentNode.insertBefore(clone, span.nextSibling)
-			//})
+			/**
+			// cancer mode
+			if(lighghtMode.checked) {
+				$silentLetters = textfield.querySelectorAll('.silent-letters');
+				$silentLetters.forEach((span) => {
+					const clone = span.cloneNode(true);
+					span.parentNode.insertBefore(clone, span.nextSibling)
+				})
+			}
+			*/
+			
+			
 		})
 
 		
-		
+	
 
 		
   });
