@@ -108,7 +108,7 @@ input[type="checkbox"] {
 	margin: calc(var(--s)/2);
 	display: grid;
 	cursor: pointer;
-	background: var(--neutral-100); /* the red color */
+	background: var(--neutral-50); /* the red color */
 	box-sizing: content-box;
 	overflow: hidden;
 	transition: .3s .1s;
